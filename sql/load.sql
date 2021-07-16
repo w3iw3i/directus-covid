@@ -1,0 +1,1 @@
+COPY records (country_region, date, last_updated, confirmed, deaths, recovered, active) FROM '/data/2020-05-01-2020-05-31.csv' with DELIMITER ',' CSV HEADER;
