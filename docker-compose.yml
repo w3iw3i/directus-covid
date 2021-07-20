@@ -6,13 +6,16 @@ services:
     volumes:
       - ./data:/data
       - ./sql/migration.sql:/docker-entrypoint-initdb.d/migration.sql
+      - ./sql/refresh.sql:/docker-entrypoint-initdb.d/refresh.sql
       - database:/var/lib/postgresql/data
     networks:
       - directus
-    environment:
-      POSTGRES_USER: 'directus'
-      POSTGRES_PASSWORD: 'directus'
-      POSTGRES_DB: 'directus'
+    env_file:
+      - .env
+    # environment:
+    #   POSTGRES_USER: 'directus'
+    #   POSTGRES_PASSWORD: 'directus'
+    #   POSTGRES_DB: 'directus'
 
   cache:
     container_name: cache
@@ -22,7 +25,7 @@ services:
 
   directus:
     container_name: directus
-    image: directus/directus:latest
+    image: directus/directus:9.0.0-rc.85
     ports:
       - 8055:8055
     volumes:
@@ -39,23 +42,23 @@ services:
     depends_on:
       - cache
       - database
-    environment: 
-      KEY: '255d861b-5ea1-5996-9aa3-922530ec40b1'
-      SECRET: '6116487b-cda1-52c2-b5b5-c8022c45e263'
+    # environment: 
+    #   KEY: '255d861b-5ea1-5996-9aa3-922530ec40b1'
+    #   SECRET: '6116487b-cda1-52c2-b5b5-c8022c45e263'
 
-      DB_CLIENT: 'pg'
-      DB_HOST: 'database'
-      DB_PORT: '5432'
-      DB_DATABASE: 'directus'
-      DB_USER: 'directus'
-      DB_PASSWORD: 'directus'
+    #   DB_CLIENT: 'pg'
+    #   DB_HOST: 'database'
+    #   DB_PORT: '5432'
+    #   DB_DATABASE: 'directus'
+    #   DB_USER: 'directus'
+    #   DB_PASSWORD: 'directus'
 
-      CACHE_ENABLED: 'true'
-      CACHE_STORE: 'redis'
-      CACHE_REDIS: 'redis://cache:6379'
+    #   CACHE_ENABLED: 'true'
+    #   CACHE_STORE: 'redis'
+    #   CACHE_REDIS: 'redis://cache:6379'
 
-      ADMIN_EMAIL: 'admin@example.com'
-      ADMIN_PASSWORD: 'password'
+    #   ADMIN_EMAIL: 'admin@example.com'
+    #   ADMIN_PASSWORD: 'password'
     env_file:
       - .env
 
